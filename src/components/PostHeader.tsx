@@ -16,16 +16,11 @@ export function PostHeader({ title, subtitle, date, coverImage }: PostHeaderProp
         <Button variant="ghost" size="sm" asChild className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
           <Link href="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
+            Retour
           </Link>
         </Button>
       </div>
-      {coverImage && (
-        <div className="mb-8 aspect-video w-full overflow-hidden rounded-lg bg-zinc-200 dark:bg-zinc-800">
-          <img src={coverImage} alt={title} className="h-full w-full object-cover" />
-        </div>
-      )}
-      <div className="space-y-4">
+      <div className="space-y-4 mb-8">
         <time className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
           {date}
         </time>
@@ -38,6 +33,11 @@ export function PostHeader({ title, subtitle, date, coverImage }: PostHeaderProp
           </p>
         )}
       </div>
+      {coverImage && (
+        <div className="aspect-video w-full overflow-hidden rounded-lg bg-zinc-200 dark:bg-zinc-800">
+          <img src={coverImage} alt={title} className="h-full w-full object-cover" />
+        </div>
+      )}
     </div>
   );
 }

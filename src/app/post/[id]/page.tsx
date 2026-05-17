@@ -23,11 +23,13 @@ export default async function PostPage({ params }: PageProps) {
     notFound();
   }
 
-  const formattedDate = new Date(post.createdAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = post.createdAt 
+    ? new Date(post.createdAt).toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
 
   return (
     <article className="min-h-screen" data-color-mode="light">

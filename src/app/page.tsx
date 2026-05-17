@@ -21,17 +21,14 @@ export default async function HomePage() {
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-8">
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 md:text-5xl">
-          Latest Articles
+          Derniers Articles
         </h1>
-        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-          Thoughts on development, design, and technology.
-        </p>
       </div>
       {posts.length > 0 ? (
         <BlogList posts={posts.map((post: any) => ({
           title: post.title,
           excerpt: post.excerpt,
-          date: new Date(post.createdAt).toLocaleDateString("en-US", {
+          date: new Date(post.createdAt).toLocaleDateString("fr-FR", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -42,9 +39,9 @@ export default async function HomePage() {
       ) : (
         <div className="text-center py-20">
           <p className="text-zinc-500 dark:text-zinc-400 text-lg">
-            No posts yet.{" "}
+            Aucun article pour le moment.{" "}
             <Link href="/post/new" className="text-zinc-900 dark:text-zinc-100 underline hover:text-zinc-700 dark:hover:text-zinc-300">
-              Create one
+              Créer un article
             </Link>
           </p>
         </div>

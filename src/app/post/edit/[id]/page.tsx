@@ -1,179 +1,127 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { getPost, updatePost, deletePost, type Post } from "@/lib/api";
-import { PostForm } from "@/components";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Trash2 } from "lucide-react";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { PostForm } from '@/components/PostForm';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-interface PageProps {
-  params: Promise<{ id: string }>;
+interface Post {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  excerpt: string;
+  content: string;
+  coverImage: string | null;
+  published: boolean;
 }
 
-export default function EditPostPage({ params }: PageProps) {
+export default function EditPostPage() {
   const router = useRouter();
-  const [post, setPost] = useState<Post | null>(null);
+  const params = useParams();
+  const postId = params.id as string;
+  
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [id, setId] = useState<string>("");
-
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
-  const [coverImage, setCoverImage] = useState("");
-  const [content, setContent] = useState("");
-  const [published, setPublished] = useState(false);
-
-  const loadPost = useCallback(async (postId: string) => {
-    try {
-      const data = await getPost(postId);
-      setPost(data);
-      setTitle(data.title);
-      setSubtitle(data.subtitle || "");
-      setExcerpt(data.excerpt);
-      setCoverImage(data.coverImage || "");
-      setContent(data.content);
-      setPublished(data.published);
-    } catch {
-      setError("Failed to load post");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [formData, setFormData] = useState({
+    title: '',
+    subtitle: '',
+    excerpt: '',
+    coverImage: '',
+    content: '',
+  });
 
   useEffect(() => {
-    params.then((p) => {
-      setId(p.id);
-      loadPost(p.id);
-    });
-  }, [params, loadPost]);
+    const token = localStorage.getItem('admin-token');
+    if (!token) {
+      router.push('/admin/login');
+      return;
+    }
+
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/admin/posts/${postId}`);
+        if (res.ok) {
+          const post: Post = await res.json();
+          setFormData({
+            title: post.title,
+            subtitle: post.subtitle || '',
+            excerpt: post.excerpt,
+            coverImage: post.coverImage || '',
+            content: post.content,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch post:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    setTimeout(() => fetchPost(), 0);
+  }, [postId, router]);
 
   const handleSubmit = async () => {
-    if (!title || !excerpt || !content) {
-      setError("Please fill in required fields");
+    if (!formData.title || !formData.excerpt || !formData.content) {
       return;
     }
 
     setIsSubmitting(true);
-    setError(null);
-
     try {
-      await updatePost(id, {
-        title,
-        subtitle,
-        excerpt,
-        coverImage,
-        content,
-        published,
+      const res = await fetch(`/api/admin/posts/${postId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-      router.push(`/post/${id}`);
-    } catch {
-      setError("Failed to update post. Please try again.");
+
+      if (res.ok) {
+        router.push('/admin');
+      }
+    } catch (error) {
+      console.error('Failed to update post:', error);
+    } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
-      return;
-    }
-
-    try {
-      await deletePost(id);
-      router.push("/");
-    } catch {
-      setError("Failed to delete post");
     }
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-zinc-500">Loading...</p>
-      </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-        <p className="text-zinc-500">Post not found</p>
-        <Button asChild variant="outline">
-          <Link href="/">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
-          </Link>
-        </Button>
-      </div>
+      <main className="min-h-screen bg-zinc-50 flex items-center justify-center">
+        <p className="text-zinc-500">Chargement...</p>
+      </main>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <Button variant="ghost" size="sm" asChild className="mb-4 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
-            <Link href={`/post/${id}`}>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Post
-            </Link>
+    <main className="min-h-screen bg-zinc-50 py-8 md:py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => router.push('/admin')}
+            className="text-zinc-500 hover:text-zinc-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour aux articles
           </Button>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-            Edit Post
-          </h1>
         </div>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDelete}
-          className="bg-red-600 hover:bg-red-700"
-        >
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete
-        </Button>
-      </div>
-
-      {error && (
-        <div className="mb-6 rounded-md bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-          {error}
-        </div>
-      )}
-
-      <div className="space-y-6 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Published
-          </label>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Uncheck to save as draft
-          </p>
-          <input
-            type="checkbox"
-            checked={published}
-            onChange={(e) => setPublished(e.target.checked)}
-            className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-500"
-          />
-        </div>
-
+        <h1 className="text-3xl font-bold text-zinc-900 mb-8">Modifier l'Article</h1>
         <PostForm
-          title={title}
-          subtitle={subtitle}
-          excerpt={excerpt}
-          coverImage={coverImage}
-          content={content}
-          onTitleChange={setTitle}
-          onSubtitleChange={setSubtitle}
-          onExcerptChange={setExcerpt}
-          onCoverImageChange={setCoverImage}
-          onContentChange={setContent}
+          title={formData.title}
+          subtitle={formData.subtitle}
+          excerpt={formData.excerpt}
+          coverImage={formData.coverImage}
+          content={formData.content}
+          onTitleChange={(value) => setFormData({ ...formData, title: value })}
+          onSubtitleChange={(value) => setFormData({ ...formData, subtitle: value })}
+          onExcerptChange={(value) => setFormData({ ...formData, excerpt: value })}
+          onCoverImageChange={(value) => setFormData({ ...formData, coverImage: value })}
+          onContentChange={(value) => setFormData({ ...formData, content: value })}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
         />
       </div>
-    </div>
+    </main>
   );
 }
