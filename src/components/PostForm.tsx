@@ -28,11 +28,13 @@ interface PostFormProps {
   excerpt?: string;
   coverImage?: string;
   content?: string;
+  published?: boolean;
   onTitleChange?: (value: string) => void;
   onSubtitleChange?: (value: string) => void;
   onExcerptChange?: (value: string) => void;
   onCoverImageChange?: (value: string) => void;
   onContentChange?: (value: string) => void;
+  onPublishedChange?: (value: boolean) => void;
   onSubmit?: () => void;
   isSubmitting?: boolean;
   className?: string;
@@ -44,11 +46,13 @@ export function PostForm({
   excerpt,
   coverImage,
   content,
+  published,
   onTitleChange,
   onSubtitleChange,
   onExcerptChange,
   onCoverImageChange,
   onContentChange,
+  onPublishedChange,
   onSubmit,
   isSubmitting,
   className,
@@ -239,7 +243,7 @@ export function PostForm({
         </Drawer>
       </section>
 
-      <section className="flex justify-end pt-12 border-t border-zinc-200 dark:border-zinc-800">
+      <section className="flex items-center justify-end pt-12 border-t border-zinc-200 dark:border-zinc-800">
         <Button
           type="submit"
           disabled={isSubmitting}

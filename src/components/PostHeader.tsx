@@ -11,7 +11,7 @@ interface PostHeaderProps {
 
 export function PostHeader({ title, subtitle, date, coverImage }: PostHeaderProps) {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 md:py-12">
+    <div className="mx-auto max-w-4xl px-4 pt-20 md:pt-24 pb-8 md:pb-12">
       <div className="mb-8">
         <Button variant="ghost" size="sm" asChild className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
           <Link href="/">

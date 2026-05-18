@@ -7,6 +7,12 @@
       "skillPath": "SKILL.md",
       "computedHash": "0ca9a70090b5780078da1500e49465dd75583cb07c8a3531340b11427b4327b7"
     },
+    "caveman": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/caveman/SKILL.md",
+      "computedHash": "dfbf85749fd474feeb0bbe60c779795ecd5dbec0083299b56e68916bc3ddd8c9"
+    },
     "gpt-taste": {
       "source": "leonxlnx/taste-skill",
       "sourceType": "github",

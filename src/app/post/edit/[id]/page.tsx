@@ -29,6 +29,7 @@ export default function EditPostPage() {
     excerpt: '',
     coverImage: '',
     content: '',
+    published: false,
   });
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function EditPostPage() {
             excerpt: post.excerpt,
             coverImage: post.coverImage || '',
             content: post.content,
+            published: post.published,
           });
         }
       } catch (error) {
@@ -71,7 +73,7 @@ export default function EditPostPage() {
       const res = await fetch(`/api/admin/posts/${postId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, published: true }),
       });
 
       if (res.ok) {
@@ -113,11 +115,13 @@ export default function EditPostPage() {
           excerpt={formData.excerpt}
           coverImage={formData.coverImage}
           content={formData.content}
+          published={formData.published}
           onTitleChange={(value) => setFormData({ ...formData, title: value })}
           onSubtitleChange={(value) => setFormData({ ...formData, subtitle: value })}
           onExcerptChange={(value) => setFormData({ ...formData, excerpt: value })}
           onCoverImageChange={(value) => setFormData({ ...formData, coverImage: value })}
           onContentChange={(value) => setFormData({ ...formData, content: value })}
+          onPublishedChange={(value) => setFormData({ ...formData, published: value })}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
         />
