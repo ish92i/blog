@@ -32,7 +32,7 @@ export function BlogCard({ title, excerpt, date, coverImage, slug, icon: Icon, c
             ) : null}
           </div>
         ) : null}
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           <time className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
             {date}
           </time>
