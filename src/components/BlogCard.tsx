@@ -36,7 +36,7 @@ export function BlogCard({ title, excerpt, date, coverImage, slug, icon: Icon, c
           <time className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
             {date}
           </time>
-          <h2 className="mt-2 text-xl font-semibold leading-tight text-zinc-950 transition-colors group-hover:text-rose-800 dark:text-zinc-50 dark:group-hover:text-rose-100">
+          <h2 className="mt-2 text-xl font-semibold leading-tight text-zinc-950 transition-colors group-hover:text-zinc-600 dark:text-zinc-50 dark:group-hover:text-zinc-300">
             {title}
           </h2>
           <p className="mt-3 line-clamp-2 text-sm text-zinc-600 dark:text-zinc-400">
