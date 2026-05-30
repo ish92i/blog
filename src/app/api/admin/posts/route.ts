@@ -1,6 +1,7 @@
 import { db } from '@/db';
-import { posts } from '@/db/schema';
+import { posts, waypoints, pois } from '@/db/schema';
 import { NextRequest, NextResponse } from 'next/server';
+import { asc } from 'drizzle-orm';
 
 function generateId(): string {
   return crypto.randomUUID();
@@ -34,6 +35,33 @@ export async function POST(request: NextRequest) {
       coverImage,
       published: published ?? true,
     }).returning();
+
+    // Auto-create POI from nearest waypoint
+    const postCreatedAt = result[0].createdAt;
+    if (postCreatedAt) {
+      const nearestWaypoints = await db.select()
+        .from(waypoints)
+        .orderBy(asc(waypoints.timestamp))
+        .limit(1);
+
+      if (nearestWaypoints.length > 0) {
+        const closest = nearestWaypoints.reduce((prev, curr) => {
+          const diffPrev = Math.abs(curr.timestamp.getTime() - postCreatedAt.getTime());
+          const diffCurr = Math.abs(prev.timestamp.getTime() - postCreatedAt.getTime());
+          return diffPrev < diffCurr ? curr : prev;
+        });
+
+        if (Math.abs(closest.timestamp.getTime() - postCreatedAt.getTime()) < 3600000) {
+          await db.insert(pois).values({
+            id: crypto.randomUUID(),
+            latitude: closest.latitude,
+            longitude: closest.longitude,
+            timestamp: closest.timestamp,
+            postId: result[0].id,
+          });
+        }
+      }
+    }
 
     return NextResponse.json(result[0], { status: 201 });
   } catch (error) {

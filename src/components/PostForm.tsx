@@ -142,9 +142,9 @@ export function PostForm({
           value={excerpt || ""}
           onChange={(e) => onExcerptChange?.(e.target.value)}
           placeholder="Écrivez une brève description..."
-          rows={5}
+          rows={8}
           className={cn(
-            "text-lg leading-relaxed resize-none min-h-[160px]",
+            "text-lg leading-relaxed resize-none min-h-[260px]",
             "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900",
             "text-zinc-700 dark:text-zinc-300",
             "placeholder:text-zinc-400 dark:placeholder:text-zinc-500",

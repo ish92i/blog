@@ -31,13 +31,13 @@ export default async function ArticlesPage() {
 
   return (
     <div className="w-full max-w-full overflow-x-hidden bg-[#fbfaf7] text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
-      <section className="relative isolate px-4 pb-8 pt-16 sm:px-6 md:pb-12 md:pt-20">
+      <section className="relative isolate px-4 pb-4 pt-20 sm:px-6 md:pb-8 md:pt-24">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-0 h-[34rem] w-[min(52rem,92vw)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(244,63,94,0.12),transparent_64%)] blur-3xl dark:bg-[radial-gradient(circle,rgba(244,63,94,0.10),transparent_64%)]" />
         </div>
 
         <div className="mx-auto max-w-5xl">
-          <div className="border-b border-zinc-200 pb-8 dark:border-white/10">
+          <div className="border-b border-zinc-200 pb-6 dark:border-white/10">
             <h1 className="text-[clamp(1.8rem,4vw,2.5rem)] font-semibold">
               Articles
             </h1>

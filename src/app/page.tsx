@@ -31,22 +31,15 @@ export default async function HomePage() {
 
   return (
     <div className="w-full max-w-full overflow-x-hidden bg-[#fbfaf7] text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
-      <section className="relative isolate px-4 pb-8 pt-16 sm:px-6 md:pb-12 md:pt-20">
+      <section className="relative isolate px-4 pb-4 pt-20 sm:px-6 md:pb-8 md:pt-24">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-0 h-[34rem] w-[min(52rem,92vw)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(244,63,94,0.12),transparent_64%)] blur-3xl dark:bg-[radial-gradient(circle,rgba(244,63,94,0.10),transparent_64%)]" />
         </div>
 
         <div className="mx-auto max-w-5xl">
-          <div className="border-b border-zinc-200 pb-8 dark:border-white/10">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              <span>Derniers articles</span>
-              <span className="h-1 w-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-              <span>{formattedPosts.length} article{formattedPosts.length > 1 ? "s" : ""}</span>
-            </div>
-            <h1 className="mt-5 max-w-4xl text-[clamp(2.7rem,8vw,6.7rem)] font-semibold leading-[0.92]">
-              Blog
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+          <div className="border-b border-zinc-200 pb-6 dark:border-white/10">
+            <h1 className="text-[clamp(1.8rem,4vw,2.5rem)] font-semibold">Albert Camus 4<sup>e</sup> Blog</h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300">
               Découvrez les aventures de la 4E à vélo jusqu&apos;à Londres.
             </p>
           </div>
